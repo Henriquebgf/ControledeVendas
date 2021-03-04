@@ -72,14 +72,10 @@ public class Pedido implements Serializable{
         this.cliente = cliente;
     }
 
-    
-    
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 53 * hash + (int) (this.id ^ (this.id >>> 32));
-        hash = 53 * hash + Objects.hashCode(this.datahora);
-        hash = 53 * hash + (int) (Double.doubleToLongBits(this.valorTotal) ^ (Double.doubleToLongBits(this.valorTotal) >>> 32));
+        int hash = 5;
+        hash = 79 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
 
@@ -98,14 +94,9 @@ public class Pedido implements Serializable{
         if (this.id != other.id) {
             return false;
         }
-        if (Double.doubleToLongBits(this.valorTotal) != Double.doubleToLongBits(other.valorTotal)) {
-            return false;
-        }
-        if (!Objects.equals(this.datahora, other.datahora)) {
-            return false;
-        }
         return true;
     }
+
     
     
 }

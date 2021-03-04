@@ -3,12 +3,20 @@ package br.edu.iff.ControledeVendas.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-
+@Entity
 public abstract class Pessoa implements Serializable{
     private static final long serialVersionUID = 1L;
-    
+    @Id
+    @GeneratedValue(strategy=  GenerationType.IDENTITY)
     private long id;
+    
+    @Column(nullable = false, length = 80)
     private String nome;
     private String telefone;
     private String email;
@@ -70,18 +78,15 @@ public abstract class Pessoa implements Serializable{
         this.endereco = endereco;
     }
 
-    
-    
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 11 * hash + (int) (this.id ^ (this.id >>> 32));
-        hash = 11 * hash + Objects.hashCode(this.nome);
-        hash = 11 * hash + Objects.hashCode(this.telefone);
-        hash = 11 * hash + Objects.hashCode(this.email);
-        hash = 11 * hash + Objects.hashCode(this.cpf);
+        hash = 97 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
+
+  
+    
 
     @Override
     public boolean equals(Object obj) {
@@ -98,21 +103,13 @@ public abstract class Pessoa implements Serializable{
         if (this.id != other.id) {
             return false;
         }
-        if (!Objects.equals(this.nome, other.nome)) {
-            return false;
-        }
-        if (!Objects.equals(this.telefone, other.telefone)) {
-            return false;
-        }
-        if (!Objects.equals(this.email, other.email)) {
-            return false;
-        }
-        if (!Objects.equals(this.cpf, other.cpf)) {
-            return false;
-        }
         return true;
     }
+
     
+    
+
+   
     
     
 }

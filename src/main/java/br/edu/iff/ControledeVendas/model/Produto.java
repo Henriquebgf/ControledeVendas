@@ -60,17 +60,10 @@ public class Produto implements Serializable{
         this.itemvendas = itemvendas;
     }
 
-   
-
-    
-    
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 13 * hash + (int) (this.id ^ (this.id >>> 32));
-        hash = 13 * hash + Objects.hashCode(this.descricao);
-        hash = 13 * hash + (int) (Double.doubleToLongBits(this.preco) ^ (Double.doubleToLongBits(this.preco) >>> 32));
-        hash = 13 * hash + this.quantidadeEstoque;
+        hash = 67 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
 
@@ -89,18 +82,11 @@ public class Produto implements Serializable{
         if (this.id != other.id) {
             return false;
         }
-        if (Double.doubleToLongBits(this.preco) != Double.doubleToLongBits(other.preco)) {
-            return false;
-        }
-        if (this.quantidadeEstoque != other.quantidadeEstoque) {
-            return false;
-        }
-        if (!Objects.equals(this.descricao, other.descricao)) {
-            return false;
-        }
         return true;
     }
-    
+
+   
+
     
     
 }

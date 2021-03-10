@@ -1,23 +1,46 @@
 
 package br.edu.iff.ControledeVendas.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
 
-
+@Entity
 public class Pedido implements Serializable{
     private static final long serialVersionUID = 1L;
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = false,unique = false,  updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)   
     private Calendar datahora;
+    @Column(nullable = false,unique = false,  updatable = false)
+    @Min(value=0 , message = "Não aceita valores negativos")
     private double valorTotal;
-    
-    private List<ItemVenda> itemvendas;
-    
+     
+    @OneToMany(mappedBy = "pedido",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemVenda> itemvendas = new ArrayList<>();
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private Funcionario funcionario;
-    
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private Cliente cliente;
     
 

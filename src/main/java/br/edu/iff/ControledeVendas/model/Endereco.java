@@ -3,15 +3,26 @@ package br.edu.iff.ControledeVendas.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 
 public class Endereco implements Serializable{
 private static final long serialVersionUID = 1L;
-    
+    @Column(nullable = false,unique = false, updatable = true)
+    @Size(min=5, max=30)
     private String bairro;
+    @Column(nullable = true,unique = false, updatable = true)
     private String rua;
+    @Column(nullable = true,unique = false, updatable = true)
+    @Min(value = 0, message = "Não aceita valores negativos")
     private int numero;
+    @Column(nullable = true,unique = false, updatable = true)
+    @Size(min=5, max=30)
     private String cidade;
+    @Column(nullable = true,unique = false, updatable = true)
+    @Size(min=5, max=7)
     private String cep;
 
     public Endereco() {

@@ -1,15 +1,23 @@
 
 package br.edu.iff.ControledeVendas.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 
-
+@Entity
 public class Cliente extends Pessoa{
+    @Column(nullable = true, unique = false,  updatable = true)
+    @Size(min=5,max=80 )
     private String documentos;
+    @JsonBackReference
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos = new ArrayList<>();
     
-    private List<Pedido> pedidos;
-
     public Cliente() {
         
     }

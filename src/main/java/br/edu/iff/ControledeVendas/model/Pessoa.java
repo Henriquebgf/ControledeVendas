@@ -4,24 +4,36 @@ package br.edu.iff.ControledeVendas.model;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Pessoa implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy=  GenerationType.IDENTITY)
     private long id;
-    
-    @Column(nullable = false, length = 80)
+    @Column(nullable = false, unique = true, updatable = false) 
+    @Size(min=4,max=80 )
     private String nome;
+    @Column(nullable = false,length= 14,unique = true, updatable = false)
+    @Pattern(regexp="\\([0-9]{2}\\)[0-9]{4,5}-[0-9]{4}",message ="Padrão deve ser obedecido.")
     private String telefone;
+    @Column(nullable = false,  unique = true, updatable = true)
+    @Size(min=10,max=80 )
     private String email;
+    @Column(nullable = false,length=14,unique = true, updatable = false)
+    @Pattern(regexp="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}",message ="Padrão deve ser obedecido.")
     private String cpf;
-    
+    @Embedded
     private Endereco endereco;
 
     public Pessoa() {

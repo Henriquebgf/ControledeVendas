@@ -1,28 +1,34 @@
 
 package br.edu.iff.ControledeVendas.model;
 
+import br.edu.iff.ControledeVendas.annotation.NomeValidation;
+import br.edu.iff.ControledeVendas.annotation.SemEspacoValidation;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
 
 
 public class Endereco implements Serializable{
 private static final long serialVersionUID = 1L;
-    @Column(nullable = false,unique = false, updatable = true)
+    @Column(nullable = true,unique = false, updatable = true)
     @Size(min=5, max=30)
     private String bairro;
     @Column(nullable = true,unique = false, updatable = true)
     private String rua;
     @Column(nullable = true,unique = false, updatable = true)
-    @Min(value = 0, message = "Não aceita valores negativos")
+    @Digits(integer = 4, fraction = 0, message = "Número deve ser inteiro e ter até 4 digitos.")
     private int numero;
     @Column(nullable = true,unique = false, updatable = true)
     @Size(min=5, max=30)
+    @NomeValidation(message = "Nome inválido.")
     private String cidade;
-    @Column(nullable = true,unique = false, updatable = true)
-    @Size(min=5, max=7)
+    @Column(nullable = true,unique = false, updatable = true) 
+    @Length(min = 9, max = 9, message = "CEP deve ter exatamente 9 caracteres (Ex: 99999-999).")
+    @SemEspacoValidation
     private String cep;
 
     public Endereco() {

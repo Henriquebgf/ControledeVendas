@@ -1,8 +1,8 @@
-
 package br.edu.iff.ControledeVendas.model;
 
+import br.edu.iff.ControledeVendas.annotation.EmailValidation;
+import br.edu.iff.ControledeVendas.annotation.NomeValidation;
 import java.io.Serializable;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -11,36 +11,45 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Pessoa implements Serializable{
+public abstract class Pessoa implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy=  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(nullable = false, unique = true, updatable = false) 
-    @Size(min=4,max=80 )
+    @Column(nullable = false, unique = true, updatable = false)
+    @Size(min = 4, max = 80)
+    @NotBlank(message = "Nome obrigatório.")
+    @NomeValidation(message = "Nome inválido.") // Nomes de pessoa e cidade não podem conter números
     private String nome;
-    @Column(nullable = false,length= 14,unique = true, updatable = false)
-    @Pattern(regexp="\\([0-9]{2}\\)[0-9]{4,5}-[0-9]{4}",message ="Padrão deve ser obedecido.")
+    @Column(nullable = false, length = 14, unique = true, updatable = true)
+    @NotBlank(message = "Telefone obrigatório.")
+    @Pattern(regexp = "\\([0-9]{2}\\)[0-9]{4,5}-[0-9]{4}", message = "Padrão deve ser obedecido.")
+    @Length(min=13, max = 14, message = "Telefone deve ter 13 ou 14 caracteres (Ex: (99)9999-9999 ou (99)99999-9999")
     private String telefone;
-    @Column(nullable = false,  unique = true, updatable = true)
-    @Size(min=10,max=80 )
+    @Column(nullable = false, unique = true, updatable = true)
+    @Size(min = 10, max = 80)
+    @EmailValidation(message = "Email inválido.")
+    @NotBlank(message = "Email obrigatório.")
     private String email;
-    @Column(nullable = false,length=14,unique = true, updatable = false)
-    @Pattern(regexp="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}",message ="Padrão deve ser obedecido.")
+    @Column(nullable = false, length = 14, unique = true, updatable = false)
+    @CPF(message = "CPF inválido.")
+    @NotBlank(message = "CPF obrigatório.")
     private String cpf;
     @Embedded
     private Endereco endereco;
 
     public Pessoa() {
-        
+
     }
-    
-    
 
     public long getId() {
         return id;
@@ -97,9 +106,6 @@ public abstract class Pessoa implements Serializable{
         return hash;
     }
 
-  
-    
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -118,10 +124,4 @@ public abstract class Pessoa implements Serializable{
         return true;
     }
 
-    
-    
-
-   
-    
-    
 }

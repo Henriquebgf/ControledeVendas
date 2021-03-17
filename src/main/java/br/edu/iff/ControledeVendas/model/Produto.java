@@ -1,10 +1,8 @@
-
 package br.edu.iff.ControledeVendas.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,32 +10,37 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 @Entity
-public class Produto implements Serializable{
+public class Produto implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
+
     @Id
-    @GeneratedValue(strategy=  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(nullable = false,unique = false, updatable = true)
-    @Size(min=5, max=80)
+    @Column(nullable = false, unique = false, updatable = true)
+    @Size(min = 5, max = 80)
+    @NotBlank
     private String descricao;
-    @Column(nullable = false,unique = false, updatable = true,precision=2)
+    @Column(nullable = false, unique = false, updatable = true, precision = 2)
+    @PositiveOrZero
+    @NotBlank
     private double preco;
-    @Column(nullable = true,unique = false, updatable = true)
+    @Column(nullable = true, unique = false, updatable = true)
     @Min(value = 0, message = "Não aceita valores negativos")
+    @PositiveOrZero
+    @NotBlank
     private int quantidadeEstoque;
-    
-    
-   
+
     @OneToMany(mappedBy = "produto")
-    private List<ItemVenda> itemvendas  = new ArrayList<>();
-    
+    private List<ItemVenda> itemvendas = new ArrayList<>();
 
     public Produto() {
-        
+
     }
 
     public long getId() {
@@ -105,8 +108,4 @@ public class Produto implements Serializable{
         return true;
     }
 
-   
-
-    
-    
 }

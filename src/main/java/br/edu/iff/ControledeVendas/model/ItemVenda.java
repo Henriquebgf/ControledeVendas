@@ -1,4 +1,3 @@
-
 package br.edu.iff.ControledeVendas.model;
 
 import java.io.Serializable;
@@ -9,32 +8,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
-public class ItemVenda implements Serializable{
+public class ItemVenda implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(nullable = false, unique = false, updatable = true)
-        @Min(value = 0, message = "Não aceita valores negativos")
+    @PositiveOrZero
+    @NotBlank
     private int quantidade;
     @Column(nullable = false, unique = false, updatable = true)
-    @Min(value = 0, message = "Não aceita valores negativos")
+    @PositiveOrZero
+    @NotBlank
     private double subtotal;
-    
-    @JoinColumn(nullable = false)   
+
+    @JoinColumn(nullable = false)
     @ManyToOne
-    private Produto produto;  
+    @NotNull(message = "Produto obrigatório.")
+    private Produto produto;
     @JoinColumn(nullable = false)
     @ManyToOne
     private Pedido pedido;
-    
-    
+
     public ItemVenda() {
     }
 
-    
     public long getId() {
         return id;
     }
@@ -84,6 +87,4 @@ public class ItemVenda implements Serializable{
         return true;
     }
 
- 
-    
 }

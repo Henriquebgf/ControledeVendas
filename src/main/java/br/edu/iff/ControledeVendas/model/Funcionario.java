@@ -1,35 +1,36 @@
-
 package br.edu.iff.ControledeVendas.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import br.edu.iff.ControledeVendas.annotation.SemEspacoValidation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 public class Funcionario extends Pessoa {
+
     @Column(nullable = false, unique = false, updatable = true)
-    @Size(min=5,max=50 )
+    @Length(min = 4,max = 50, message = "Setor deve ter no mínimo 5 e no máximo 50 caracteres.")
+    @NotBlank(message = "Setor obrigatório.")
     private String setor;
-    @Column(nullable = false, unique = true,  updatable = true)
-    @Size(min=4,max=50 )
+    @Column(nullable = false, unique = true, updatable = true)
+    @Length(min = 4,max = 50, message = "Senha deve ter no mínimo 4 e no máximo 50 caracteres.")
+    @SemEspacoValidation
+    @NotBlank(message = "Senha obrigatória.")
     private String senha;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "funcionario")
     private List<Pedido> pedidos = new ArrayList<>();
-    
-    
-
 
     public Funcionario() {
-        
+
     }
 
-    
     public String getSetor() {
         return setor;
     }
@@ -53,9 +54,5 @@ public class Funcionario extends Pessoa {
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
     }
-    
-    
 
-    
-   
 }

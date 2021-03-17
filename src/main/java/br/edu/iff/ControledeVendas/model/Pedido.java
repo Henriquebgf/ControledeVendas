@@ -1,7 +1,5 @@
-
 package br.edu.iff.ControledeVendas.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,32 +15,42 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-public class Pedido implements Serializable{
+public class Pedido implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(nullable = false,unique = false,  updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)   
+
+    @Column(nullable = false, unique = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @NotNull(message = "Data de registro é obrigatória.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Calendar datahora;
-    @Column(nullable = false,unique = false,  updatable = false)
-    @Min(value=0 , message = "Não aceita valores negativos")
+
+    @Column(nullable = false, unique = false, updatable = false)
+    @PositiveOrZero
     private double valorTotal;
-     
-    @OneToMany(mappedBy = "pedido",cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Size(min = 1, message = "Pedido deve ter no minimo 1 item")
     private List<ItemVenda> itemvendas = new ArrayList<>();
-    @JsonManagedReference
+
     @ManyToOne
     @JoinColumn(nullable = false)
+    @NotNull(message = "Funcionario obrigatório.")
     private Funcionario funcionario;
-    @JsonManagedReference
+
     @ManyToOne
     @JoinColumn(nullable = false)
+    @NotNull(message = "Cliente obrigatório.")
     private Cliente cliente;
-    
 
     public Pedido() {
     }
@@ -120,6 +128,4 @@ public class Pedido implements Serializable{
         return true;
     }
 
-    
-    
 }

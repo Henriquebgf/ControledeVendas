@@ -1,7 +1,8 @@
-
 package br.edu.iff.ControledeVendas.model;
 
+import br.edu.iff.ControledeVendas.annotation.SemEspacoValidation;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -10,16 +11,17 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
 @Entity
-public class Cliente extends Pessoa{
-    @Column(nullable = true, unique = false,  updatable = true)
-    @Size(min=5,max=80 )
+public class Cliente extends Pessoa {
+
+    @Column(nullable = true, unique = false, updatable = true)
+    @Size(min = 5, max = 80)
     private String documentos;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
-    
+
     public Cliente() {
-        
+
     }
 
     public String getDocumentos() {
@@ -37,8 +39,5 @@ public class Cliente extends Pessoa{
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
     }
-    
-    
 
-    
 }

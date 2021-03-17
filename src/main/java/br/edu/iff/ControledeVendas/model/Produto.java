@@ -31,7 +31,6 @@ public class Produto implements Serializable {
     @NotBlank
     private double preco;
     @Column(nullable = true, unique = false, updatable = true)
-    @Min(value = 0, message = "Não aceita valores negativos")
     @PositiveOrZero
     @NotBlank
     private int quantidadeEstoque;

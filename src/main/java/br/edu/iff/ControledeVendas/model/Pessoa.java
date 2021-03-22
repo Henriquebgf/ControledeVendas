@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -45,6 +46,7 @@ public abstract class Pessoa implements Serializable {
     @NotBlank(message = "CPF obrigatório.")
     private String cpf;
     @Embedded
+    @Valid
     private Endereco endereco;
 
     public Pessoa() {

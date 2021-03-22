@@ -1,7 +1,5 @@
 package br.edu.iff.ControledeVendas.model;
 
-import br.edu.iff.ControledeVendas.annotation.SemEspacoValidation;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;

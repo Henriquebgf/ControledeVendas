@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
@@ -39,6 +40,7 @@ public class Pedido implements Serializable {
     private double valorTotal;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Valid
     @Size(min = 1, message = "Pedido deve ter no minimo 1 item")
     private List<ItemVenda> itemvendas = new ArrayList<>();
 

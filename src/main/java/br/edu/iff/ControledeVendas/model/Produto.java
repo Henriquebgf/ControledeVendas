@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
@@ -25,13 +26,15 @@ public class Produto implements Serializable {
     @Size(min = 5, max = 80)
     @NotBlank
     private String descricao;
+
+    
     @Column(nullable = false, unique = false, updatable = true, precision = 2)
     @PositiveOrZero
-    @NotBlank
+    @NotNull
     private double preco;
     @Column(nullable = true, unique = false, updatable = true)
     @PositiveOrZero
-    @NotBlank
+    @NotNull
     private int quantidadeEstoque;
 
     @OneToMany(mappedBy = "produto")

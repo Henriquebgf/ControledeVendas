@@ -20,18 +20,18 @@ public class ItemVenda implements Serializable {
     private long id;
     @Column(nullable = false, unique = false, updatable = true)
     @PositiveOrZero
-    @NotBlank
+    @NotNull
     private int quantidade;
     @Column(nullable = false, unique = false, updatable = true)
     @PositiveOrZero
-    @NotBlank
+    @NotNull
     private double subtotal;
 
     @JoinColumn(nullable = false)
     @ManyToOne
     @NotNull(message = "Produto obrigatório.")
     private Produto produto;
-    @JoinColumn(nullable = false)
+   
     @ManyToOne
     private Pedido pedido;
 
@@ -61,6 +61,23 @@ public class ItemVenda implements Serializable {
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
     }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+    
 
     @Override
     public int hashCode() {

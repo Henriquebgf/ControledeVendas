@@ -55,7 +55,7 @@ public class ProdutoService {
             p.setQuantidadeEstoque(obj.getQuantidadeEstoque());
             return repo.save(p);
         }catch(Exception e){
-            throw new RuntimeException("Falha ao atualizar o Hotel.");
+            throw new RuntimeException("Falha ao atualizar o Produto.");
         }
     }
     

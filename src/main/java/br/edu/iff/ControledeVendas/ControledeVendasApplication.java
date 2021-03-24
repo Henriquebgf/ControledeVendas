@@ -10,6 +10,7 @@ import br.edu.iff.ControledeVendas.repository.ClienteRepository;
 import br.edu.iff.ControledeVendas.repository.FuncionarioRepository;
 import br.edu.iff.ControledeVendas.repository.PedidoRepository;
 import br.edu.iff.ControledeVendas.repository.ProdutoRepository;
+import br.edu.iff.ControledeVendas.service.PedidoService;
 import java.util.Calendar;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +38,10 @@ public class ControledeVendasApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         //Cliente
         Cliente c1 = new Cliente();
-        c1.setNome("Matheus");
+        c1.setNome("Antonia");
         c1.setCpf("765.620.220-02");
-        c1.setEmail("matheus@gmail.com");
-        c1.setTelefone("(22)99999-9999");
+        c1.setEmail("Antonia@gmail.com");
+        c1.setTelefone("(22)99222-2222");
 
         Endereco end = new Endereco();
         end.setRua("Rua das flores");
@@ -54,13 +55,13 @@ public class ControledeVendasApplication implements CommandLineRunner {
 
         //Funcionario
         Funcionario f1 = new Funcionario();
-        f1.setNome("João");
-        f1.setEmail("joao@gmail.com");
+        f1.setNome("Luis");
+        f1.setEmail("Luis@gmail.com");
         f1.setCpf("325.291.890-05");
         f1.setEndereco(end);
-        f1.setTelefone("(22)99345-9999");
-        f1.setSetor("Financeiro");
-        f1.setSenha("12345678");
+        f1.setTelefone("(22)9983-9949");
+        f1.setSetor("vendas");
+        f1.setSenha("12385678");
 
         funcionarioRepo.save(f1);
 
@@ -103,6 +104,7 @@ public class ControledeVendasApplication implements CommandLineRunner {
 
         i2.setPedido(p1);
         i1.setPedido(p1);
+        
 
     }
 

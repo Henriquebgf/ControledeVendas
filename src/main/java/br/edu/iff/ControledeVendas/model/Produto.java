@@ -109,4 +109,8 @@ public class Produto implements Serializable {
         return true;
     }
 
+    public boolean isEmpty() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

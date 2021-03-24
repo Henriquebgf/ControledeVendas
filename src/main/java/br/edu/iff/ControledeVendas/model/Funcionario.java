@@ -54,4 +54,8 @@ public class Funcionario extends Pessoa {
         this.pedidos = pedidos;
     }
 
+    public Object getReservas() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

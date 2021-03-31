@@ -1,5 +1,6 @@
 package br.edu.iff.ControledeVendas.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,7 +33,8 @@ public class Pedido implements Serializable {
     @Column(nullable = false, unique = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull(message = "Data de registro é obrigatória.")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Calendar datahora;
 
     @Column(nullable = false, unique = false, updatable = false)

@@ -1,5 +1,6 @@
 package br.edu.iff.ControledeVendas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
@@ -31,7 +31,7 @@ public class ItemVenda implements Serializable {
     @ManyToOne
     @NotNull(message = "Produto obrigatório.")
     private Produto produto;
-   
+
     @ManyToOne
     private Pedido pedido;
 
@@ -77,7 +77,6 @@ public class ItemVenda implements Serializable {
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
     }
-    
 
     @Override
     public int hashCode() {

@@ -1,9 +1,9 @@
 package br.edu.iff.ControledeVendas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +16,7 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 @Entity
+
 public class Produto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,6 +39,7 @@ public class Produto implements Serializable {
     private int quantidadeEstoque;
 
     @OneToMany(mappedBy = "produto")
+    @JsonIgnore
     private List<ItemVenda> itemvendas = new ArrayList<>();
 
     public Produto() {
@@ -46,6 +48,10 @@ public class Produto implements Serializable {
 
     public long getId() {
         return id;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     public void setId(long id) {
@@ -109,9 +115,7 @@ public class Produto implements Serializable {
         return true;
     }
 
-    public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+  
 
     public void setId(Object object) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

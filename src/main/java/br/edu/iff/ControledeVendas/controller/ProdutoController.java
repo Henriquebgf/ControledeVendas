@@ -29,13 +29,13 @@ public class ProdutoController {
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
         //Forma detalhando status e corpo
-        return ResponseEntity.status(HttpStatus.OK).body(service.findAll(page, size));
+        return ResponseEntity.ok(service.findAll(page, size));
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity getOne(@PathVariable("id") Long id) {
+    public ResponseEntity getOne(@PathVariable("id") Long id) throws NotFoundException {
         // Forma resumida
-        return ResponseEntity.ok(id);
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping

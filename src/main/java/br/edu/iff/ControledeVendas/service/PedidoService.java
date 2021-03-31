@@ -1,6 +1,5 @@
 package br.edu.iff.ControledeVendas.service;
 
-import br.edu.iff.ControledeVendas.model.ItemVenda;
 import br.edu.iff.ControledeVendas.model.Pedido;
 import br.edu.iff.ControledeVendas.repository.PedidoRepository;
 import java.util.Calendar;

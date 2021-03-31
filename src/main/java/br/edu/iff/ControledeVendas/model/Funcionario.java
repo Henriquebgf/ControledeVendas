@@ -2,6 +2,7 @@ package br.edu.iff.ControledeVendas.model;
 
 import br.edu.iff.ControledeVendas.annotation.SemEspacoValidation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
+@JsonIgnoreProperties(value= "senha",allowGetters = false, allowSetters = true)
 public class Funcionario extends Pessoa {
 
     @Column(nullable = false, unique = false, updatable = true)
@@ -54,9 +56,9 @@ public class Funcionario extends Pessoa {
         this.pedidos = pedidos;
     }
 
-    public Object getReservas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   
+
+    
 
     public void setId(Object object) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

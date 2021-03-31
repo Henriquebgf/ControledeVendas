@@ -52,6 +52,23 @@ public class ControledeVendasApplication implements CommandLineRunner {
 
         c1.setEndereco(end);
         clienteRepo.save(c1);
+        
+         //Cliente
+        Cliente c2 = new Cliente();
+        c2.setNome("Maria");
+        c2.setCpf("090.845.020-60");
+        c2.setEmail("maria@gmail.com");
+        c2.setTelefone("(22)99222-4444");
+
+        Endereco end2 = new Endereco();
+        end2.setRua("Rua do Barão");
+        end2.setNumero(123);
+        end2.setBairro("Parque Novo");
+        end2.setCidade("Itaperuna");
+        end2.setCep("28000-432");
+
+        c2.setEndereco(end2);
+        clienteRepo.save(c2);
 
         //Funcionario
         Funcionario f1 = new Funcionario();
@@ -105,7 +122,9 @@ public class ControledeVendasApplication implements CommandLineRunner {
         i2.setPedido(p1);
         i1.setPedido(p1);
         
+        
 
     }
 
+  
 }

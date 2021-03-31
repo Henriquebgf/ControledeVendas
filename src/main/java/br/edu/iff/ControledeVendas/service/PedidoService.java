@@ -36,7 +36,7 @@ public class PedidoService {
         return repo.findAll(p).toList();
     }
 
-    public Pedido findById(Long id) throws NotFoundException{
+    public Pedido findById(Long id) throws NotFoundException {
         Optional<Pedido> obj = repo.findById(id);
         if (obj.isEmpty()) {
             throw new NotFoundException("Pedido não encontrado.");
@@ -55,26 +55,24 @@ public class PedidoService {
         }
     }
 
-    public Pedido update(Pedido p, ItemVenda item) throws NotFoundException {
+    public Pedido update(Pedido p) throws NotFoundException {
         //verificar se já existe
         Pedido obj = findById(p.getId());
-        ItemVenda i = new ItemVenda();
-        item = i;
+
         try {
             p.setDatahora(Calendar.getInstance());
-            p.setItemvendas((List<ItemVenda>) item);
+
             return repo.save(p);
         } catch (Exception e) {
 
             throw new RuntimeException("Falha ao atualizar a pedido");
         }
     }
-    
 
     public void delete(Long id) throws NotFoundException {
         Pedido obj = findById(id);
         try {
-           
+
             repo.delete(obj);
         } catch (Exception e) {
             throw new RuntimeException("Falha ao deletar a pedido.");

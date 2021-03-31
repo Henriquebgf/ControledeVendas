@@ -1,7 +1,5 @@
-
 package br.edu.iff.ControledeVendas.service;
 
-import br.edu.iff.ControledeVendas.model.ItemVenda;
 import br.edu.iff.ControledeVendas.model.Produto;
 import br.edu.iff.ControledeVendas.repository.ProdutoRepository;
 import java.util.List;
@@ -14,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProdutoService {
-    
-     @Autowired
+
+    @Autowired
     private ProdutoRepository repo;
 
     public List<Produto> findAll(int page, int size) {
@@ -34,7 +32,7 @@ public class ProdutoService {
         }
         return result.get();
     }
-    
+
     public Produto save(Produto p) {
         verificaDescricaoCadastrado(p.getDescricao());
         try {
@@ -43,41 +41,39 @@ public class ProdutoService {
             throw new RuntimeException("Falha ao salvar o Produto.");
         }
     }
-    
-    public Produto update(Produto p) throws NotFoundException{
+
+    public Produto update(Produto p) throws NotFoundException {
         Produto obj = findById(p.getId());
-        
-        List<ItemVenda> itensAtuais = obj.getItemvendas();
-        itensAtuais.removeAll(obj.getItemvendas());
-        try{
+
+        try {
             p.setDescricao(obj.getDescricao());
             p.setPreco(obj.getPreco());
             p.setQuantidadeEstoque(obj.getQuantidadeEstoque());
             return repo.save(p);
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Falha ao atualizar o Produto.");
         }
     }
-    
-    public void delete(Long id) throws NotFoundException{
+
+    public void delete(Long id) throws NotFoundException {
         Produto obj = findById(id);
-        verificaExclusaoprodutosVendidos(obj.getItemvendas());
-        
-        try{
+        verificaExclusaoprodutosVendidos(obj);
+
+        try {
             repo.delete(obj);
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Falha ao deletar o produto.");
         }
     }
-    
-     private void verificaExclusaoprodutosVendidos(List<ItemVenda> ItemVenda){
-        for(ItemVenda i : ItemVenda){
-            if(!i.getProduto().isEmpty()){
-                throw new RuntimeException("Não é possível excluir produtos pedidos.");
-            }
+
+    private void verificaExclusaoprodutosVendidos(Produto p) {
+
+        if (!p.getItemvendas().isEmpty()) {
+            throw new RuntimeException("Não é possível excluir produtos pedidos.");
+
         }
     }
-    
+
     private void verificaDescricaoCadastrado(String descricao) {
         List<Produto> result = repo.findByDescricao(descricao);
         if (!result.isEmpty()) {

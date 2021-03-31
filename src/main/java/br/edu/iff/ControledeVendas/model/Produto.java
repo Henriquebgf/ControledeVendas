@@ -3,6 +3,7 @@ package br.edu.iff.ControledeVendas.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +28,6 @@ public class Produto implements Serializable {
     @NotBlank
     private String descricao;
 
-    
     @Column(nullable = false, unique = false, updatable = true, precision = 2)
     @PositiveOrZero
     @NotNull
@@ -110,6 +110,10 @@ public class Produto implements Serializable {
     }
 
     public boolean isEmpty() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setId(Object object) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

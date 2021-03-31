@@ -130,4 +130,8 @@ public class Pedido implements Serializable {
         return true;
     }
 
+    public void setId(Object object) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

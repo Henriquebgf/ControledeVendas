@@ -6,7 +6,6 @@ import br.edu.iff.ControledeVendas.repository.FuncionarioRepository;
 import java.util.List;
 import java.util.Optional;
 import javassist.NotFoundException;
-import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -57,16 +56,8 @@ public class FuncionarioService {
         try {
             f.setCpf(obj.getCpf());
             f.setEmail(obj.getEmail());
-            f.setSenha(obj.getSenha());
             return repo.save(f);
         } catch (Exception e) {
-           Throwable t = e;
-            while (t.getCause() != null) {
-                t = t.getCause();
-                if (t instanceof ConstraintViolationException) {
-                    throw ((ConstraintViolationException) t);
-                }
-            }
             throw new RuntimeException("Falha ao atualizar o Funcionario.");
         }
     }

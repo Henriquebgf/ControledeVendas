@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import javassist.NotFoundException;
+import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -63,10 +64,20 @@ public class PedidoService {
 
             return repo.save(p);
         } catch (Exception e) {
-
+            Throwable t = e;
+            while (t.getCause() != null) {
+                t = t.getCause();
+                if (t instanceof ConstraintViolationException) {
+                    throw ((ConstraintViolationException) t);
+                }
+            }
             throw new RuntimeException("Falha ao atualizar a pedido");
         }
     }
+
+    
+
+    
 
     public void delete(Long id) throws NotFoundException {
         Pedido obj = findById(id);

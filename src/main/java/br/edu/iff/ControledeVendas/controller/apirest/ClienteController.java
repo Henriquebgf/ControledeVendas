@@ -1,4 +1,4 @@
-package br.edu.iff.ControledeVendas.controller;
+package br.edu.iff.ControledeVendas.controller.apirest;
 
 import br.edu.iff.ControledeVendas.model.Cliente;
 import br.edu.iff.ControledeVendas.service.ClienteService;

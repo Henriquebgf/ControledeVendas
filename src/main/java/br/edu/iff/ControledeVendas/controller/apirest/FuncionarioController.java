@@ -1,7 +1,7 @@
-package br.edu.iff.ControledeVendas.controller;
+package br.edu.iff.ControledeVendas.controller.apirest;
 
-import br.edu.iff.ControledeVendas.model.Produto;
-import br.edu.iff.ControledeVendas.service.ProdutoService;
+import br.edu.iff.ControledeVendas.model.Funcionario;
+import br.edu.iff.ControledeVendas.service.FuncionarioService;
 import javassist.NotFoundException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,44 +18,53 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/apirest/produtos")
-public class ProdutoController {
+@RequestMapping(path = "/apirest/funcionarios")
+public class FuncionarioController {
 
     @Autowired
-    private ProdutoService service;
+    private FuncionarioService service;
 
     @GetMapping
     public ResponseEntity getAll(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
-        //Forma detalhando status e corpo
+
         return ResponseEntity.ok(service.findAll(page, size));
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity getOne(@PathVariable("id") Long id) throws NotFoundException {
-        // Forma resumida
         return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity save(@Valid @RequestBody Produto produto) {
-        /* recebe obj via JSON e o desserializa com anotação "RequestBody" e valida obj via anotação "Valid"*/
-        produto.setId(null);
-        service.save(produto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(produto);
+    public ResponseEntity save(@Valid @RequestBody Funcionario funcionario) {
+        funcionario.setId(null);
+        service.save(funcionario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(funcionario);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody Produto produto) throws NotFoundException {
-        produto.setId(id);
-        service.update(produto);
+    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Funcionario funcionario) throws NotFoundException {
+        funcionario.setId(id);
+        service.update(funcionario, "", "", "");
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping(path ="/{id}")
+    @DeleteMapping(path = "/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) throws NotFoundException {
         service.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(path = "/{id}/alterarSenha")
+    public ResponseEntity alterarSenha(@PathVariable("id") Long id,
+            @RequestParam(name = "senhaAtual", defaultValue = "", required = true) String senhaAtual,
+            @RequestParam(name = "novaSenha", defaultValue = "", required = true) String novaSenha,
+            @RequestParam(name = "confirmarNovaSenha", defaultValue = "", required = true) String confirmarNovaSenha) throws NotFoundException {
+
+        Funcionario f = service.findById(id);
+        service.update(f, senhaAtual, novaSenha, confirmarNovaSenha);
         return ResponseEntity.ok().build();
     }
 }

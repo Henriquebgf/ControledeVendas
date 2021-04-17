@@ -10,7 +10,6 @@ import br.edu.iff.ControledeVendas.repository.ClienteRepository;
 import br.edu.iff.ControledeVendas.repository.FuncionarioRepository;
 import br.edu.iff.ControledeVendas.repository.PedidoRepository;
 import br.edu.iff.ControledeVendas.repository.ProdutoRepository;
-import br.edu.iff.ControledeVendas.service.PedidoService;
 import java.util.Calendar;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,21 +81,42 @@ public class ControledeVendasApplication implements CommandLineRunner {
 
         funcionarioRepo.save(f1);
 
-        //produto
+        //produto 1
         Produto prod1 = new Produto();
         prod1.setDescricao("xbox series x");
-        prod1.setPreco(45);
+        prod1.setPreco(4500);
         prod1.setQuantidadeEstoque(6);
 
-        //produto
+        //produto 2
         Produto prod2 = new Produto();
         prod2.setDescricao("Playstation 5");
-        prod2.setPreco(30);
+        prod2.setPreco(3500);
         prod2.setQuantidadeEstoque(5);
+        
+         //produto 3
+        Produto prod3 = new Produto();
+        prod3.setDescricao("Iphone XS");
+        prod3.setPreco(4250);
+        prod3.setQuantidadeEstoque(10);
+       
+        //produto 4
+        Produto prod4 = new Produto();
+        prod4.setDescricao("Cabo HDMI");
+        prod4.setPreco(20);
+        prod4.setQuantidadeEstoque(32);
+        
+        //produto 5
+        Produto prod5 = new Produto();
+        prod5.setDescricao("Monitor UltraWide ");
+        prod5.setPreco(1552);
+        prod5.setQuantidadeEstoque(2);
 
         produtoRepo.save(prod1);
 
         produtoRepo.save(prod2);
+        produtoRepo.save(prod3);
+        produtoRepo.save(prod4);
+        produtoRepo.save(prod5);
 
         //pedido
         Pedido p1 = new Pedido();
@@ -123,8 +143,8 @@ public class ControledeVendasApplication implements CommandLineRunner {
         i1.setPedido(p1);
         
         
-
-    }
-
+    
   
+    }
+    
 }

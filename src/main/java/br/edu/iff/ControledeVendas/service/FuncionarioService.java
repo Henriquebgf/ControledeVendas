@@ -104,7 +104,7 @@ public class FuncionarioService {
 
     private void verificaExclusaoClienteComPedidos(Funcionario f) {
         if (!f.getPedidos().isEmpty()) {
-            throw new RuntimeException("Funcionario possui reservas. Não pode ser excluído.");
+            throw new RuntimeException("Funcionario possui Pedidos. Não pode ser excluído.");
         }
     }
 

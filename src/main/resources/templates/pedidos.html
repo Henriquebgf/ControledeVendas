@@ -1,4 +1,4 @@
-ines (41 sloc) 2.24 KB
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head th:replace="~{fragmentos :: imports-css(title='Pedidos')}">
@@ -7,36 +7,36 @@ ines (41 sloc) 2.24 KB
     <body>
         <div th:replace="~{fragmentos :: barramenu(pagina='pedidos')}"/>
         <div class="container" style="margin-top: 20px">
-            <div class="card-header">
-                <h4>Pedidos cadastradas
-                    <a class="btn btn-primary float-right" th:href="@{~/produtos/{produto}/pedidos/pedido(pedido=${idproduto})}" role="button">Novo Pedido</a>
+            <div class="card-header" style="border-radius: 10px ">
+                <h4>Pedidos Realizdos
+                    <a class="btn btn-primary float-right" th:href="@{~/pedidos/pedido}" role="button">Novo Pedido</a>
                 </h4>
-            </div>
+            </div><br>
 
 
-            <div class="card" th:each="pedido : ${pedidos}">
+            <div class="card bg-dark text-white" th:each="pedido : ${pedidos}" style="border-radius: 10px ; margin-bottom: 4px">
                 <div class="card-body">
 
-         
-
+                    <div class="card-text">
+                        <span>ID:</span>
+                        <span th:text="${pedido.id}"></span>
+                    </div>
                     <div class="card-text">
                         <span>Cliente:</span>
                         <span th:text="${pedido.cliente.nome}"></span>
                     </div>
                     <div class="card-text">
-                        <span>Inicio:</span>
-                        <span th:text="${pedido.inicio.get(5)+'/'+(pedido.inicio.get(2)+1)+'/'+pedido.inicio.get(1)}"></span>
+                        <span>Funcionario:</span>
+                        <span th:text="${pedido.funcionario.nome}"></span>
                     </div>
                     <div class="card-text">
-                        <span>Termino:</span>
-                        <span th:text="${pedido.termino.get(5)+'/'+(pedido.termino.get(2)+1)+'/'+pedido.termino.get(1)}"></span>
+                        <span>Data:</span>
+                        <span th:text="${pedido.datahora.get(5)+'/'+(pedido.datahora.get(2)+1)+'/'+pedido.datahora.get(1)}"></span>
+                       
                     </div>
-                    <div class="card-text">
-                        <a th:href="@{~/produtos/{produto}/pedidos/pedido/{id}(id=${pedido.id}, produto=${idProduto})}" class="btn btn-warning">Editar</a>
-                        <a th:href="@{~/produtos/{produto}/pedidos/{id}/deletar(id=${pedido.id}, produto=${idProduto})}" class="btn btn-danger" onclick="return confirm('Deseja realmente excluir esse pedido?')">Excluir</a>
-                    </div>
-
                 </div>
+                
+                
 
             </div>
 

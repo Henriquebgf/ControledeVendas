@@ -23,7 +23,7 @@ public class Produto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(nullable = false, unique = false, updatable = true)
     @Size(min = 5, max = 80)
     @NotBlank
@@ -46,7 +46,7 @@ public class Produto implements Serializable {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -54,7 +54,7 @@ public class Produto implements Serializable {
         return serialVersionUID;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -115,10 +115,6 @@ public class Produto implements Serializable {
         return true;
     }
 
-  
-
-    public void setId(Object object) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   
 
 }

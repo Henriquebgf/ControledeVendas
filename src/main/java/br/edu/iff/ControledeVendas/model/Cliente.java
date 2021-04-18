@@ -38,9 +38,13 @@ public class Cliente extends Pessoa {
         this.pedidos = pedidos;
     }
 
-    public void setId(Object object) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+  
+
+   
+
+   
+
+    
 
     
 

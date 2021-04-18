@@ -3,6 +3,7 @@ package br.edu.iff.ControledeVendas.controller.view;
 
 import br.edu.iff.ControledeVendas.model.Produto;
 import br.edu.iff.ControledeVendas.service.ProdutoService;
+import javassist.NotFoundException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -32,9 +34,8 @@ public class ProdutoViewController {
         return "formProduto";
     }
 
-    @PostMapping(path = "/produto")
+   @PostMapping(path = "/produto")
     public String save(@Valid @ModelAttribute Produto produto, BindingResult result, Model model) {
-        //valores de retorno padão
         
         if (result.hasErrors()) {
             model.addAttribute("msgErros", result.getAllErrors());
@@ -51,6 +52,38 @@ public class ProdutoViewController {
             return "formProduto";
         }
     }
+    
+      @GetMapping(path = "/produto/{id}")
+    public String alterar(@PathVariable("id") Long id,Model model) throws NotFoundException {
+        model.addAttribute("produto", service.findById(id));
+
+        return "formProduto";
+    }
+    
+    @PostMapping(path = "/produto/{id}")
+    public String update(@Valid @ModelAttribute Produto produto, BindingResult result, @PathVariable("id") Long id, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("msgErros", result.getAllErrors());
+            return "formProduto";
+        }
+        produto.setId(id);
+        try {
+            service.update(produto);
+            model.addAttribute("msgSucesso", "Produto atualizado com sucesso.");
+            model.addAttribute("produto", produto);
+            return "formProduto";
+        } catch (Exception e) {
+            model.addAttribute("msgErros", new ObjectError("Produto", e.getMessage()));
+            return "formProduto";
+        }
+    }
+        
+     @GetMapping(path = "/{id}/deletar")
+    public String deletar(@PathVariable("id") Long id) throws NotFoundException {
+        service.delete(id);
+        return "redirect:/produtos";
+    }
+    
     
 
 }

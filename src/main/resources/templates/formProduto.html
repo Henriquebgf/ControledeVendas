@@ -7,16 +7,17 @@
         <div th:replace="~{fragmentos :: barramenu(pagina='produtos')}"/>
 
         <div class="container" style="width: 60%; margin-top: 20px">
-            <div class="card-header">
+            <div class="card-header" style="border-radius: 10px ">
                 <h4>Cadastro de Produtos
-                    <a class="btn btn-primary float-right" th:href="@{~/hoteis}" role="button">voltar</a>
+                    <a class="btn btn-primary float-right" th:href="@{~/produtos}" role="button">voltar</a>
                 </h4>
-            </div>
+            </div><br>
 
 
-            <div id="main" class="container-fluid" style="margin-top: 20px; margin-bottom: 20px; width: 85%">
-                <h3 class="page-header">Adicionar Produto</h3>
+            <div id="main" class="container-fluid bg-dark text-white" style="margin-top: 20px; margin-bottom: 20px; width: 85%; border-radius: 10px">
+               
 
+                <div th:replace="~{fragmentos :: mensagens}"></div>
                 <form form th:object="${produto}" th:action="@{~/produtos/produto/{id}(id=${produto.id})}" method="post" class="card-body">
                     <input type="hidden" th:field="*{id}"/>
                     <div class="row">
@@ -41,13 +42,12 @@
                     <div id="actions" class="row">
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-primary">Salvar</button>
-                            <a href="index.html" class="btn btn-default">Cancelar</a>
                         </div>
                     </div>
                 </form>
             </div>
 
-            </form>
+           
 
         </div>
 

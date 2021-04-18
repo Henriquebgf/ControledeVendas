@@ -45,7 +45,6 @@ public class ProdutoService {
 
     public Produto update(Produto p) throws NotFoundException {
         Produto obj = findById(p.getId());
-
         try {
             p.setDescricao(obj.getDescricao());
             p.setPreco(obj.getPreco());

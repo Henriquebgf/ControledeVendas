@@ -7,8 +7,6 @@ import java.util.List;
 import javassist.NotFoundException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -57,7 +55,7 @@ public class FuncionarioViewController {
             return "formFuncionario";
         }
 
-        funcionario.setId(null);
+        funcionario.setId((Long)null);
         try {
             service.save(funcionario);
             model.addAttribute("msgSucesso", "Funcionário cadastrado com sucesso.");

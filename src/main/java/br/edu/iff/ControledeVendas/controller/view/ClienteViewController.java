@@ -45,7 +45,7 @@ public class ClienteViewController {
             model.addAttribute("msgErros", result.getAllErrors());
             return "formCliente";
         }
-        cliente.setId(null);
+      
         try {
             service.save(cliente, file);
             model.addAttribute("msgSucesso", "Cliente cadastrado com sucesso.");

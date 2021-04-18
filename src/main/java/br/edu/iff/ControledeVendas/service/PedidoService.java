@@ -88,4 +88,8 @@ public class PedidoService {
             throw new RuntimeException("Falha ao deletar a pedido.");
         }
     }
+
+    public Object findAll(Long idProduto) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

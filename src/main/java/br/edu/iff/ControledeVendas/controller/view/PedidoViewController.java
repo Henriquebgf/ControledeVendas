@@ -6,10 +6,18 @@ import br.edu.iff.ControledeVendas.service.ClienteService;
 import br.edu.iff.ControledeVendas.service.FuncionarioService;
 import br.edu.iff.ControledeVendas.service.PedidoService;
 import br.edu.iff.ControledeVendas.service.ProdutoService;
+import java.util.ArrayList;
+import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -39,6 +47,37 @@ public class PedidoViewController {
         model.addAttribute("funcionarios", funcionarioService.findAll());
         model.addAttribute("produtos", produtoService.findAll());
         return "formPedido";
+    }
+    
+    @PostMapping(path = "/pedido")
+    public String save(@Valid @ModelAttribute Pedido pedido,BindingResult result, Model model) {
+       
+        model.addAttribute("clientes", clienteService.findAll());
+        model.addAttribute("funcionarios", funcionarioService.findAll());
+        model.addAttribute("produtos", produtoService.findAll());
+
+        //Elimina erro de dataHora
+        List<FieldError> list = new ArrayList<>();
+        for (FieldError fe : result.getFieldErrors()) {
+            if (!fe.getField().equals("dataHora")) {
+                list.add(fe);
+            }
+        }
+        if (!list.isEmpty()) {
+            model.addAttribute("msgErros", list);
+            return "formPedido";
+        }
+
+        pedido.setId(null);
+        try {
+            service.save(pedido);
+            model.addAttribute("msgSucesso", "Pedido cadastrada com sucesso.");
+            model.addAttribute("pedido", new Pedido());
+            return "formPedido";
+        } catch (Exception e) {
+            model.addAttribute("msgErros", new ObjectError("pedido", e.getMessage()));
+            return "formPedido";
+        }
     }
 
 }

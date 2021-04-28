@@ -8,8 +8,9 @@ public class SemEspacoValidator  implements ConstraintValidator<SemEspacoValidat
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext cvc) {
-         if(value.contains(" ")) return false;
-         return true;
+        if(value==null) return false;
+        if(value.contains(" ")) return false;
+        return true;
     }
     
 }

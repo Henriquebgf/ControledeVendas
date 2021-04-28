@@ -1,6 +1,7 @@
 package br.edu.iff.ControledeVendas.service;
 
 import br.edu.iff.ControledeVendas.model.Funcionario;
+import br.edu.iff.ControledeVendas.model.Permissao;
 import br.edu.iff.ControledeVendas.model.Pessoa;
 import br.edu.iff.ControledeVendas.repository.FuncionarioRepository;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import org.springframework.stereotype.Service;
 
@@ -42,7 +44,10 @@ public class FuncionarioService {
 
     public Funcionario save(Funcionario f) {
         verificaCpfEmailCadastrado(f.getCpf(), f.getEmail());
+        //Verifica permissões nulas
+        removePermissoesNulas(f);
         try {
+            f.setSenha(new BCryptPasswordEncoder().encode(f.getSenha()));
             return repo.save(f);
         } catch (Exception e) {
             throw new RuntimeException("Falha ao salvar o Funcionario.");
@@ -52,6 +57,8 @@ public class FuncionarioService {
     public Funcionario update(Funcionario f, String senhaAtual, String novaSenha, String confirmarNovaSenha) throws NotFoundException {
         //Verifica de funcionario já existe
         Funcionario obj = findById(f.getId());
+        //Verifica permissões nulas
+        removePermissoesNulas(f);
         //Verifica alteração da senha
         alterarSenha(obj, senhaAtual, novaSenha, confirmarNovaSenha);
         try {
@@ -60,7 +67,7 @@ public class FuncionarioService {
             f.setSenha(obj.getSenha());
             return repo.save(f);
         } catch (Exception e) {
-             Throwable t = e;
+            Throwable t = e;
             while (t.getCause() != null) {
                 t = t.getCause();
                 if (t instanceof ConstraintViolationException) {
@@ -90,7 +97,7 @@ public class FuncionarioService {
     }
 
     private void alterarSenha(Funcionario obj, String senhaAtual, String novaSenha, String confirmarNovaSenha) {
-      
+
         if (!senhaAtual.isBlank() && !novaSenha.isBlank() && !confirmarNovaSenha.isBlank()) {
             if (!senhaAtual.equals(obj.getSenha())) {
                 throw new RuntimeException("Senha atual está incorreta.");
@@ -98,13 +105,22 @@ public class FuncionarioService {
             if (!novaSenha.equals(confirmarNovaSenha)) {
                 throw new RuntimeException("Nova Senha e Confirmar Nova Senha não conferem.");
             }
-            obj.setSenha(novaSenha);
+            obj.setSenha(new BCryptPasswordEncoder().encode(novaSenha));
         }
     }
 
     private void verificaExclusaoClienteComPedidos(Funcionario f) {
         if (!f.getPedidos().isEmpty()) {
             throw new RuntimeException("Funcionario possui Pedidos. Não pode ser excluído.");
+        }
+    }
+
+    public void removePermissoesNulas(Funcionario f) {
+        f.getPermissoes().removeIf((Permissao p) -> {
+            return p.getId() == null;
+        });
+        if (f.getPermissoes().isEmpty()) {
+            throw new RuntimeException("Funcionario deve conter no mínimo 1 permissão.");
         }
     }
 

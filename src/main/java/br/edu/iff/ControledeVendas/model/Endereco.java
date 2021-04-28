@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.Length;
 public class Endereco implements Serializable{
 private static final long serialVersionUID = 1L;
     @Column(nullable = true,unique = false, updatable = true)
-    @Size(min=5, max=30)
+    @Size(min=5, max=30 ,message = "O campo bairro deve ter entre 5 e 30 caracteres")
     private String bairro;
     @Column(nullable = true,unique = false, updatable = true)
     private String rua;
@@ -23,7 +23,7 @@ private static final long serialVersionUID = 1L;
     private int numero;
     @Column(nullable = true,unique = false, updatable = true)
     @Size(min=5, max=30)
-    @NomeValidation(message = "Nome inválido.")
+    @NomeValidation(message = "Nome inválido: não pode conter número")
     private String cidade;
     @Column(nullable = true,unique = false, updatable = true) 
     @Length(min = 9, max = 9, message = "CEP deve ter exatamente 9 caracteres (Ex: 99999-999).")

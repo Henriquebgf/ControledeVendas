@@ -26,7 +26,7 @@ public abstract class Pessoa implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(nullable = false, unique = true)
     @Size(min = 4, max = 80)
     @NotBlank(message = "Nome obrigatório.")
     @NomeValidation(message = "Nome inválido.") // Nomes de pessoa e cidade não podem conter números

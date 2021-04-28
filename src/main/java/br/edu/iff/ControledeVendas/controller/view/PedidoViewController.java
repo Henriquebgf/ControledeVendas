@@ -8,6 +8,7 @@ import br.edu.iff.ControledeVendas.service.PedidoService;
 import br.edu.iff.ControledeVendas.service.ProdutoService;
 import java.util.ArrayList;
 import java.util.List;
+import javassist.NotFoundException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -59,7 +61,7 @@ public class PedidoViewController {
         //Elimina erro de dataHora
         List<FieldError> list = new ArrayList<>();
         for (FieldError fe : result.getFieldErrors()) {
-            if (!fe.getField().equals("dataHora")) {
+            if (!fe.getField().equals("datahora")) {
                 list.add(fe);
             }
         }
@@ -79,5 +81,35 @@ public class PedidoViewController {
             return "formPedido";
         }
     }
+    
+     @GetMapping(path = "/pedido/{id}")
+    public String alterar(@PathVariable("id") Long id,Model model) throws NotFoundException {
+        model.addAttribute("pedido", service.findById(id));
 
+        return "formPedido";
+    }
+    
+       @PostMapping(path = "/pedido/{id}")
+    public String update(@Valid @ModelAttribute Pedido pedido, BindingResult result, @PathVariable("id") Long id, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("msgErros", result.getAllErrors());
+            return "formPedido";
+        }
+       pedido.setId(id);
+        try {
+            service.update(pedido);
+            model.addAttribute("msgSucesso", "Pedido atualizado com sucesso.");
+            model.addAttribute("pedido", pedido);
+            return "formPedido";
+        } catch (Exception e) {
+            model.addAttribute("msgErros", new ObjectError("Pedido", e.getMessage()));
+            return "formPedido";
+        }
+    }
+
+     @GetMapping(path = "/{id}/deletar")
+    public String deletar(@PathVariable("id") Long id) throws NotFoundException {
+        service.delete(id);
+        return "redirect:/pedidos";
+    }
 }

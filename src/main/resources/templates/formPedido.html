@@ -8,10 +8,10 @@
         <body>
             <div th:replace="~{fragmentos :: barramenu(pagina='pedidos')}"/>
 
-            <div class="container" style="width: 60%; margin-top: 20px">
+            <div class="container-fluid" style="width: 80%; margin-top: 20px">
                 <div class="card-header" style="border-radius: 10px ">
                     <h4>Carrinho de Compras
-
+                     <a class="btn btn-primary float-right" th:href="@{~/pedidos}" role="button">voltar</a>
                     </h4>
                 </div>
 
@@ -22,7 +22,7 @@
 
 
 
-                    <form th:object="${pedido}"  th:action="@{~/pedidos/pedido}" method="post" class="card-body">
+                    <form th:object="${pedido}"  th:action="@{~/pedidos/pedido/{id}(id=${pedido.id})}" method="post" class="card-body">
                         <input type="hidden" th:field="*{id}"/>
 
                         <div class="form-row">
@@ -64,19 +64,32 @@
                                         <th scope="col">&nbsp;</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
+                                <tbody >
+                                    <tr th:each="item, i : ${pedido.itemvendas}">
                                         <td width="400px">
-                                            <select name="produtos[]" class="form-control" required>
+                                            <select th:field="*{itemvendas[__${i.index}__].produto.id}" class="form-control" required>
                                                 <option th:each="produto : ${produtos}"
                                                         th:value="${produto.id}"
                                                         th:text="${produto.descricao}"></option>
                                             </select>
                                         </td>
-                                        <td><input type="number" class="col-xs-2 form-control" name="quantidades[]" min="1" max="100" value="1" required></td>
+                                        <td><input type="number" class="col-xs-2 form-control" th:field="*{itemvendas[__${i.index}__].quantidade}" min="1"></td>
                                         
-                                        <td><button type="button" class="btn btn-dark btn-sm removerLinha" style="text-align: left">Remover</button></td>
-                                    </tr>               
+                                        <td><button type="button" th:id="${ 'remover'+i.index} " class="btn btn-dark btn-sm removerLinha" style="text-align: left">Remover</button></td>
+                                    </tr>         
+                                    
+                                    <tr th:if="${pedido.itemvendas.size()<=0}">
+                                        <td width="400px">
+                                            <select th:field="*{itemvendas[0].produto.id}" class="form-control" required>
+                                                <option th:each="produto : ${produtos}"
+                                                        th:value="${produto.id}"
+                                                        th:text="${produto.descricao}"></option>
+                                            </select>
+                                        </td>
+                                        <td><input type="number" class="col-xs-2 form-control" th:field="*{itemvendas[0].quantidade}" required></td>
+                                        
+                                        <td><button type="button" id="remover0" class="btn btn-dark btn-sm removerLinha" style="text-align: left">Remover</button></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -92,10 +105,22 @@
                 <script>
                     var tabela = document.body.querySelector("table tbody");
                     adicionar.addEventListener("click", function (event) {
+                        var cont = document.body.querySelectorAll("tbody tr").length;
                         var clone = document.body.querySelectorAll("table tr")[1].cloneNode(true);
-                        var els = clone.querySelectorAll("input");
+                        var els = clone.querySelectorAll("input,select,button");
                         for (var x = 0; x < els.length; x++) {
                             els[x].value = '';
+                            if (els[x].name.includes('produto')){
+                                els[x].name = 'itemvendas[' + cont + '].produto.id';
+                                els[x].id = 'itemvendas' + cont + '.produto.id';
+                            }
+                             if (els[x].name.includes('quantidade')){
+                                els[x].name = 'itemvendas[' + cont + '].quantidade';
+                                els[x].id = 'itemvendas' + cont + '.quantidade';
+                            }
+                             if (els[x].name.includes('remover')){
+                                els[x].id = 'remover' + cont ;
+                            }
                         }
                         tabela.appendChild(clone);
                     });
@@ -113,6 +138,26 @@
                             alert("O pedido deve possuir pelo menos 1 item!");
                         }
                     });
+                    function atualizar() {
+                        var rows = document.body.querySelectorAll("tbody tr");
+                        for (var x = 0; x < rows.length; x++) {
+                            var els = rows[x].querySelectorAll("input,select,button");
+                            for (var y = 0; y <els.length; y++) {
+                                if (els[y].name.includes('produto')){
+                                    els[y].name = 'itemvendas[' + x + '].produto.id';
+                                    els[y].id = 'itemvendas' + x + '.produto.id';
+                                }
+                                if (els[y].name.includes('quantidade')){
+                                    els[y].name = 'itemvendas[' + x + '].quantidade';
+                                    els[y].id = 'itemvendas' + x + '.quantidade';
+                                }
+                                 if (els[y].name.includes('remover')){
+                                    els[y].id = 'remover' + x;
+                                }
+                               
+                            }
+                        }
+                    }
                 </script>
 
                 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -32,7 +32,7 @@ public class Pedido implements Serializable {
 
     @Column(nullable = false, unique = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    @NotNull(message = "Data de registro Ã© obrigatÃ³ria.")
+    @NotNull(message = "Data de registro é obrigatória.")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Calendar datahora;
@@ -41,19 +41,20 @@ public class Pedido implements Serializable {
     @PositiveOrZero
     private double valorTotal;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true)
     @Valid
     @Size(min = 1, message = "Pedido deve ter no minimo 1 item")
     private List<ItemVenda> itemvendas = new ArrayList<>();
 
+    
     @ManyToOne
     @JoinColumn(nullable = false)
-    @NotNull(message = "Funcionario obrigatÃ³rio.")
+    @NotNull(message = "Funcionario obrigatório.")
     private Funcionario funcionario;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    @NotNull(message = "Cliente obrigatÃ³rio.")
+    @NotNull(message = "Cliente obrigatório.")
     private Cliente cliente;
 
     public Pedido() {

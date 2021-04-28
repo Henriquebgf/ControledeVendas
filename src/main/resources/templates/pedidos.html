@@ -8,7 +8,7 @@
         <div th:replace="~{fragmentos :: barramenu(pagina='pedidos')}"/>
         <div class="container" style="margin-top: 20px">
             <div class="card-header" style="border-radius: 10px ">
-                <h4>Pedidos Realizdos
+                <h4>Pedidos Realizados
                     <a class="btn btn-primary float-right" th:href="@{~/pedidos/pedido}" role="button">Novo Pedido</a>
                 </h4>
             </div><br>
@@ -33,9 +33,12 @@
                         <span>Data:</span>
                         <span th:text="${pedido.datahora.get(5)+'/'+(pedido.datahora.get(2)+1)+'/'+pedido.datahora.get(1)}"></span>
                        
-                    </div>
-                </div>
+                    </div><br>
+                        
+                     <a th:href="@{'~/pedidos/pedido/'+${pedido.id}}" class="btn btn-warning">Editar</a>
+                    <a th:href="@{'~/pedidos/'+${pedido.id}+'/deletar'}" class="btn btn-danger" onclick="return confirm('Deseja realmente Cancelar esse pedido?')">Cancelar Pedido</a>
                 
+                </div>
                 
 
             </div>

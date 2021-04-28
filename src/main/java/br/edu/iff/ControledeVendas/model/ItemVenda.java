@@ -32,8 +32,6 @@ public class ItemVenda implements Serializable {
     @NotNull(message = "Produto obrigatório.")
     private Produto produto;
 
-    @ManyToOne
-    private Pedido pedido;
 
     public ItemVenda() {
     }
@@ -70,13 +68,7 @@ public class ItemVenda implements Serializable {
         this.produto = produto;
     }
 
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
-    }
+  
 
     @Override
     public int hashCode() {

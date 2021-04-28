@@ -5,10 +5,12 @@ import br.edu.iff.ControledeVendas.model.Endereco;
 import br.edu.iff.ControledeVendas.model.Funcionario;
 import br.edu.iff.ControledeVendas.model.ItemVenda;
 import br.edu.iff.ControledeVendas.model.Pedido;
+import br.edu.iff.ControledeVendas.model.Permissao;
 import br.edu.iff.ControledeVendas.model.Produto;
 import br.edu.iff.ControledeVendas.repository.ClienteRepository;
 import br.edu.iff.ControledeVendas.repository.FuncionarioRepository;
 import br.edu.iff.ControledeVendas.repository.PedidoRepository;
+import br.edu.iff.ControledeVendas.repository.PermissaoRepository;
 import br.edu.iff.ControledeVendas.repository.ProdutoRepository;
 import java.util.Calendar;
 import java.util.List;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class ControledeVendasApplication implements CommandLineRunner {
@@ -28,6 +31,8 @@ public class ControledeVendasApplication implements CommandLineRunner {
     private ProdutoRepository produtoRepo;
     @Autowired
     private PedidoRepository pedidoRepo;
+    @Autowired
+    private PermissaoRepository permissaoRepo;
 
     public static void main(String[] args) {
         SpringApplication.run(ControledeVendasApplication.class, args);
@@ -35,6 +40,13 @@ public class ControledeVendasApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        //Permissão
+        Permissao per1 = new Permissao();
+        per1.setNome("ADMIN");
+        Permissao per2 = new Permissao();
+        per2.setNome("FUNC");
+        permissaoRepo.saveAll(List.of(per1, per2));
+
         //Cliente
         Cliente c1 = new Cliente();
         c1.setNome("Antonia");
@@ -51,8 +63,8 @@ public class ControledeVendasApplication implements CommandLineRunner {
 
         c1.setEndereco(end);
         clienteRepo.save(c1);
-        
-         //Cliente
+
+        //Cliente
         Cliente c2 = new Cliente();
         c2.setNome("Maria");
         c2.setCpf("090.845.020-60");
@@ -71,13 +83,14 @@ public class ControledeVendasApplication implements CommandLineRunner {
 
         //Funcionario
         Funcionario f1 = new Funcionario();
+         f1.setPermissoes(List.of(per1));
         f1.setNome("Luis");
-        f1.setEmail("Luis@gmail.com");
+        f1.setEmail("luis@gmail.com");
         f1.setCpf("325.291.890-05");
         f1.setEndereco(end);
         f1.setTelefone("(22)9983-9949");
         f1.setSetor("vendas");
-        f1.setSenha("12385678");
+        f1.setSenha(new BCryptPasswordEncoder().encode("12345678"));
 
         funcionarioRepo.save(f1);
 
@@ -92,19 +105,19 @@ public class ControledeVendasApplication implements CommandLineRunner {
         prod2.setDescricao("Playstation 5");
         prod2.setPreco(3500);
         prod2.setQuantidadeEstoque(5);
-        
-         //produto 3
+
+        //produto 3
         Produto prod3 = new Produto();
         prod3.setDescricao("Iphone XS");
         prod3.setPreco(4250);
         prod3.setQuantidadeEstoque(10);
-       
+
         //produto 4
         Produto prod4 = new Produto();
         prod4.setDescricao("Cabo HDMI");
         prod4.setPreco(20);
         prod4.setQuantidadeEstoque(32);
-        
+
         //produto 5
         Produto prod5 = new Produto();
         prod5.setDescricao("Monitor UltraWide ");
@@ -139,12 +152,6 @@ public class ControledeVendasApplication implements CommandLineRunner {
         p1.setItemvendas(List.of(i1, i2));
         pedidoRepo.save(p1);
 
-        i2.setPedido(p1);
-        i1.setPedido(p1);
-        
-        
-    
-  
     }
-    
+
 }

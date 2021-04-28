@@ -8,6 +8,8 @@ import java.util.List;
 import javassist.NotFoundException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -115,6 +117,51 @@ public class FuncionarioViewController {
     public String deletar(@PathVariable("id") Long id) throws NotFoundException {
         service.delete(id);
         return "redirect:/funcionarios";
+    }
+    
+     //------------ MEUS DADOS  ----------------
+    @GetMapping(path = "/meusdados")
+    public String getMeusDados(@AuthenticationPrincipal User user, Model model){
+        Funcionario funcionario = service.findByEmail(user.getUsername());
+        model.addAttribute("funcionario", funcionario);
+        return "formMeusDados";
+    }
+    
+    @PostMapping(path = "/meusdados")
+    public String updateMeusDados(
+            @Valid @ModelAttribute Funcionario funcionario,
+            BindingResult result,
+            @AuthenticationPrincipal User user,
+            @RequestParam("senhaAtual") String senhaAtual,
+            @RequestParam("novaSenha") String novaSenha,
+            @RequestParam("confirmarNovaSenha") String confirmarNovaSenha,
+            Model model) {
+        
+        List<FieldError> list = new ArrayList<>();
+        for(FieldError fe : result.getFieldErrors()){
+            if(!fe.getField().equals("senha") && !fe.getField().equals("permissoes") ){
+                list.add(fe);
+            }
+        }
+        if (!list.isEmpty()) {
+            model.addAttribute("msgErros", list);
+            return "formMeusDados";
+        }
+
+        Funcionario funcionarioBD = service.findByEmail(user.getUsername());
+        if(!funcionarioBD.getId().equals(funcionario.getId())){
+            throw new RuntimeException("Acesso negado.");
+        }
+        try {
+            funcionario.setPermissoes(funcionarioBD.getPermissoes());
+            service.update(funcionario, senhaAtual, novaSenha, confirmarNovaSenha);
+            model.addAttribute("msgSucesso", "Funcionário atualizado com sucesso.");
+            model.addAttribute("funcionario", funcionario);
+            return "formMeusDados";
+        } catch (Exception e) {
+            model.addAttribute("msgErros", new ObjectError("funcionario", e.getMessage()));
+            return "formMeusDados";
+        }
     }
 
 }

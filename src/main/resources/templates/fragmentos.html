@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 
-<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> 
     <head th:fragment="imports-css(title)">
         <title th:text="${title}">Sistema de Controle de Vendas</title>
         <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <link th:href="@{~/webjars/bootstrap/4.5.0/css/bootstrap.min.css}" rel="stylesheet"/>
                 </head>
-    <body class="bg-dark" >
+                <body class="bg-dark" >
                     <div th:fragment="barramenu(pagina)" >
                         <div class="container-fluid " style="padding-left: 0; padding-right: 0 ;" >
 
@@ -30,11 +30,18 @@
                                         <li class="nav-item" th:classappend="${pagina == 'clientes' ? 'active' : ''}">
                                             <a class="nav-link" th:href="@{~/clientes}">Clientes</a> 
                                         </li>
-                                        <li class="nav-item" th:classappend="${pagina == 'funcionarios' ? 'active' : ''}" >
+                                        <li class="nav-item" th:classappend="${pagina == 'funcionarios' ? 'active' : ''}" sec:authorize="hasRole ('ROLE_ADMIN')" >
                                             <a class="nav-link" th:href="@{~/funcionarios}" >Funcionarios</a> 
                                         </li>
-
+                                        <li class="nav-item" th:classappend="${pagina == 'meusdados' ? 'active' : ''}" >
+                                            <a class="nav-link" th:href="@{~/funcionarios/meusdados}">Meus Dados</a> 
+                                        </li>
+                                        <li  >
+                                                      <a sec:authorize="isAuthenticated()" class="btn btn-danger " th:href="@{~/logout}" role="button">Logout</a>
+                                        </li>
+                              
                                     </ul>
+
 
                                 </div>
                         </div>

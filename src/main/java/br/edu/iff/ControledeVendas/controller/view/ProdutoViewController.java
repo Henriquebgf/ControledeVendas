@@ -62,6 +62,7 @@ public class ProdutoViewController {
     
     @PostMapping(path = "/produto/{id}")
     public String update(@Valid @ModelAttribute Produto produto, BindingResult result, @PathVariable("id") Long id, Model model) {
+        
         if (result.hasErrors()) {
             model.addAttribute("msgErros", result.getAllErrors());
             return "formProduto";

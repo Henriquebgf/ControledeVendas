@@ -1,4 +1,3 @@
-
 package br.edu.iff.ControledeVendas.controller.view;
 
 import br.edu.iff.ControledeVendas.model.Pedido;
@@ -25,10 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping(path = "/pedidos")
 public class PedidoViewController {
-    
+
     @Autowired
     private PedidoService service;
-    
+
     @Autowired
     private ProdutoService produtoService;
     @Autowired
@@ -37,12 +36,12 @@ public class PedidoViewController {
     private FuncionarioService funcionarioService;
 
     @GetMapping
-    public String getAll( Model model) {
-        model.addAttribute("pedidos", service.findAll());      
+    public String getAll(Model model) {
+        model.addAttribute("pedidos", service.findAll());
         return "pedidos";
     }
-    
-     @GetMapping(path = "/pedido")
+
+    @GetMapping(path = "/pedido")
     public String cadastro(Model model) {
         model.addAttribute("pedido", new Pedido());
         model.addAttribute("clientes", clienteService.findAll());
@@ -50,10 +49,10 @@ public class PedidoViewController {
         model.addAttribute("produtos", produtoService.findAll());
         return "formPedido";
     }
-    
+
     @PostMapping(path = "/pedido")
-    public String save(@Valid @ModelAttribute Pedido pedido,BindingResult result, Model model) {
-       
+    public String save(@Valid @ModelAttribute Pedido pedido, BindingResult result, Model model) {
+
         model.addAttribute("clientes", clienteService.findAll());
         model.addAttribute("funcionarios", funcionarioService.findAll());
         model.addAttribute("produtos", produtoService.findAll());
@@ -81,21 +80,29 @@ public class PedidoViewController {
             return "formPedido";
         }
     }
-    
-     @GetMapping(path = "/pedido/{id}")
-    public String alterar(@PathVariable("id") Long id,Model model) throws NotFoundException {
+
+    @GetMapping(path = "/pedido/{id}")
+    public String alterar(@PathVariable("id") Long id, Model model) throws NotFoundException {
         model.addAttribute("pedido", service.findById(id));
+        model.addAttribute("produtos", produtoService.findAll());
+        model.addAttribute("clientes", clienteService.findAll());
+        model.addAttribute("funcionarios", funcionarioService.findAll());
 
         return "formPedido";
     }
-    
-       @PostMapping(path = "/pedido/{id}")
+
+    @PostMapping(path = "/pedido/{id}")
     public String update(@Valid @ModelAttribute Pedido pedido, BindingResult result, @PathVariable("id") Long id, Model model) {
+        //Valores a serem retornados no model
+        model.addAttribute("produtos", produtoService.findAll());
+        model.addAttribute("clientes", clienteService.findAll());
+        model.addAttribute("funcionarios", funcionarioService.findAll());
+
         if (result.hasErrors()) {
             model.addAttribute("msgErros", result.getAllErrors());
             return "formPedido";
         }
-       pedido.setId(id);
+        pedido.setId(id);
         try {
             service.update(pedido);
             model.addAttribute("msgSucesso", "Pedido atualizado com sucesso.");
@@ -107,7 +114,7 @@ public class PedidoViewController {
         }
     }
 
-     @GetMapping(path = "/{id}/deletar")
+    @GetMapping(path = "/{id}/deletar")
     public String deletar(@PathVariable("id") Long id) throws NotFoundException {
         service.delete(id);
         return "redirect:/pedidos";
